@@ -1,0 +1,71 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Python stdlib
+import random
+import sys
+# Third party
+import Image
+import ImageDraw
+
+
+# Naive Prim's Algorithm -- O(n**2) to find the Minimum Spanning Tree
+def prims(vertices):
+
+  def dist_calc(px, py):
+    return abs(px[0] - py[0]) + abs(px[1] - py[1])
+
+  nodes_disconnected = set(xrange(len(vertices)))
+  nodes_connected = set()
+  nodes_connected.add(nodes_disconnected.pop())
+  edges = []
+
+  total_nodes = len(nodes_disconnected)
+  sys.stderr.write('Total nodes: {}\n'.format(total_nodes))
+  while nodes_disconnected:
+    if len(nodes_disconnected) % 1000 == 0:
+      sys.stderr.write('Processed {} of {}\n'.format(len(nodes_disconnected), total_nodes))
+    target = nodes_disconnected.pop()
+    nearest = min(nodes_connected, key=lambda x: dist_calc(vertices[target], vertices[x]))
+    edges.append((vertices[target], vertices[nearest]))
+    nodes_connected.add(target)
+  return edges
+
+
+def aail_create(in_fn, out_fn, simplify=1):
+  # Open the given file and convert it to black and white (ITU-R 601-2 luma transform)
+  im = Image.open(in_fn)
+  im = im.convert('1')
+
+  # Select all black pixels and make them vertices in our graph
+  x, y = im.size
+  vertices = [(i % x, i / x) for i, pix in enumerate(im.getdata()) if pix == 0]
+  # Thin out the herd of vertices -- less important for smaller images or faster implementations
+  # Hint: This isn't a fast implementation ;)
+  sys.stderr.write('Starting with {} nodes for Minimum Spanning Tree\n'.format(len(vertices)))
+  if simplify > 0:
+    vertices = [x for x in vertices if random.choice([True] + [False] * simplify)]
+    sys.stderr.write('Simplified by keeping approx 1/{} of the nodes -- only {} nodes remain\n'.format(simplify, len(vertices)))
+
+  # TODO: Convert to approximation of Travelling Salesman Problem (non-overlapping)
+
+  # Create a new image the same size with a white background
+  im = Image.new(im.mode, im.size, 255)
+  draw = ImageDraw.Draw(im)
+  edges = prims(vertices)
+  for (edge_x, edge_y) in edges:
+    draw.line((edge_x, edge_y), fill=0)
+
+  im.save(out_fn)
+
+
+if __name__ == '__main__':
+  from optparse import OptionParser
+  usage = 'usage: %prog [options] input_image output_image'
+  parser = OptionParser()
+  parser.add_option('-n', type='int', dest='simplify', default=1, help='Simplification amount (retain 1/n vertices for MST)')
+  (options, args) = parser.parse_args()
+
+  if len(args) != 2:
+    parser.error("incorrect number of arguments")
+
+  aail_create(*args, simplify=options.simplify)
