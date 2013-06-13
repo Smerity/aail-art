@@ -61,7 +61,7 @@ def aail_create(in_fn, out_fn, simplify=1):
 if __name__ == '__main__':
   from optparse import OptionParser
   usage = 'usage: %prog [options] input_image output_image'
-  parser = OptionParser()
+  parser = OptionParser(usage)
   parser.add_option('-n', type='int', dest='simplify', default=1, help='Simplification amount (retain 1/n vertices for MST)')
   (options, args) = parser.parse_args()
 
