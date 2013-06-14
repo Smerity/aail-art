@@ -11,11 +11,11 @@ Whilst this results in a Minimum Spanning Tree (MST) and not a TSP, the resultin
 This implementation of Prim's algorithm is also `O(n^2)` and will not scale well for large inputs.
 For tuning, use the `simplify` command line option.
 
-Finally, the solver allows for use of two different distance calculators: L1 and L2.
-L1 distance is commonly known as [Manhattan distance](http://en.wikipedia.org/wiki/Taxicab_geometry)
+Finally, the solver allows for use of two different distance calculators: `L1` and `L2`.
+`L1` distance is commonly known as [Manhattan distance](http://en.wikipedia.org/wiki/Taxicab_geometry)
 and is the distance it'd take you to get from one point to another if you had to navigate via city blocks.
-L2 distance can be described as the distance 'as the crow flies'.
-Manhattan distance encourages horizontal and vertical lines which serve a particular aesthetic aim.
+`L2` distance can be described as the distance 'as the crow flies'.
+Manhattan distance encourages horizontal and vertical lines which may serve a particular aesthetic aim.
 
     Usage: aail [options] input_image output_image
     
