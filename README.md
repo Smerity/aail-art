@@ -25,4 +25,12 @@ Manhattan distance encourages horizontal and vertical lines which may serve a pa
       --l1         Enable L1 (abs(x) + abs(y)) distance calculation instead of L2
                    (x**2 + y**2)
 
+### If you were crazy...
+
+If you want to contribute to this pet project, some ideas include:
+
++ Implement approximate TSP (non overlapping for aesthetics) so you can trace the image without taking your pen off the paper
++ A C/Go/Java/Lua/PyPy/NumPy/GPGPU/<faster>/... implementation of MST for improved speed on large data sets
++ For the "I must make everything a ray tracer" idea: store the pixels in an octree so only a subset of pixels need to be considered instead of all `N` pixels
+
 ![](https://github.com/smerity/aail-art/raw/master/sample.png)
